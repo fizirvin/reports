@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, BrowserRouter, Switch } from 'react-router-dom'
+import { connect } from 'react-redux'
+import * as Pages from 'pages'
+import './App.css'
 
-function App() {
+const App = ({ isAuth = false }) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+      {isAuth ? (
+        <Switch>
+          <Route path={'/'} exact component={Pages.Reports} />
+        </Switch>
+      ) : (
+        <Pages.Login />
+      )}
+    </BrowserRouter>
+  )
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  isAuth: state.userReducer.isAuth
+})
+
+export default connect(mapStateToProps, {})(App)
